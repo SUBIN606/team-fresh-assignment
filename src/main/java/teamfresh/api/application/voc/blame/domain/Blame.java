@@ -7,8 +7,10 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import lombok.Getter;
 
 /** 귀책 엔티티 */
+@Getter
 @Entity
 public class Blame {
 
@@ -38,26 +40,5 @@ public class Blame {
 
     public static Blame of(BlameTarget target, String cause) {
         return new Blame(null, target, cause);
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public BlameTarget getTarget() {
-        return target;
-    }
-
-    public String getCause() {
-        return cause;
-    }
-
-    @Override
-    public String toString() {
-        return "Blame{" +
-                "id=" + id +
-                ", target=" + target +
-                ", cause='" + cause + '\'' +
-                '}';
     }
 }

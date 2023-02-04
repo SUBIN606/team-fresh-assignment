@@ -8,9 +8,11 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
+import lombok.Getter;
 import teamfresh.api.application.voc.blame.domain.Blame;
 
 /** VOC(Voice of Customer) 엔티티 */
+@Getter
 @Entity
 public class Voc {
 
@@ -48,22 +50,6 @@ public class Voc {
         Voc voc = new Voc(0L, content, createdBy);
         voc.setBlame(blame);
         return voc;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public Long getCreatedBy() {
-        return createdBy;
-    }
-
-    public Blame getBlame() {
-        return blame;
     }
 
     private void setBlame(final Blame blame) {

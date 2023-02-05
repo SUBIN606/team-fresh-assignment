@@ -1,7 +1,6 @@
 package teamfresh.api.application.voc.service;
 
 import lombok.AllArgsConstructor;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -28,7 +27,7 @@ public class VocCreator {
     @Transactional
     public Voc create(Command command) {
         return repository.save(
-                Voc.withBlame(
+                Voc.of(
                         command.content,
                         blameCreator.create(command.target, command.cause),
                         command.customerManagerId,

@@ -41,7 +41,7 @@ class VocCreatorTest {
         Long customerManagerId = 9L;
 
         Blame blame = Blame.of(1L, target, cause);
-        Voc voc = Voc.withBlame(content, blame, customerManagerId, createdBy);
+        Voc voc = Voc.of(1L, content, blame, customerManagerId, createdBy);
 
         @DisplayName("VOC를 생성 후 반환한다")
         @Test

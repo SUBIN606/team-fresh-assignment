@@ -38,9 +38,10 @@ class VocCreatorTest {
         String content = "배송 물건 파손";
         BlameTarget target = BlameTarget.CARRIER;
         String cause = "배송 중 박스가 박스 훼손으로 인한 물건 파손";
+        Long customerManagerId = 9L;
 
         Blame blame = Blame.of(1L, target, cause);
-        Voc voc = Voc.withBlame(content, createdBy, blame);
+        Voc voc = Voc.withBlame(content, blame, customerManagerId, createdBy);
 
         @DisplayName("VOC를 생성 후 반환한다")
         @Test
@@ -49,10 +50,9 @@ class VocCreatorTest {
             given(vocRepository.save(any())).willReturn(voc);
 
             Voc savedVoc = vocCreator.create(
-                    createdBy,
-                    content,
-                    target,
-                    cause
+                    new VocCreator.Command(
+                            content, target, cause, customerManagerId, createdBy
+                    )
             );
 
             assertAll(()->{

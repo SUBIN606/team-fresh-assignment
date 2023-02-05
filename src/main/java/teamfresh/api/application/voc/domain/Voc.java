@@ -57,8 +57,12 @@ public class Voc {
         return new Voc(null, content, null, null, null, createdBy);
     }
 
-    public static Voc withBlame(String content, Blame blame, Long customerManagerId, Long createdBy) {
-        return new Voc(0L, content, blame, null, customerManagerId, createdBy);
+    public static Voc of(String content, Blame blame, Long customerManagerId, Long createdBy) {
+        return new Voc(null, content, blame, null, customerManagerId, createdBy);
+    }
+
+    public static Voc of(Long id, String content, Blame blame, Long customerManagerId, Long createdBy) {
+        return new Voc(id, content, blame, null, customerManagerId, createdBy);
     }
 
     /**

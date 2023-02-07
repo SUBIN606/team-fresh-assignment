@@ -1,7 +1,5 @@
 package teamfresh.api.web.vocs.compensations;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -18,6 +16,7 @@ import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static teamfresh.api.web.MvcTestHelpers.toJSON;
 
 @WebMvcTest(CompensationsCreateController.class)
 public class CompensationsCreateControllerMvcTest {
@@ -58,10 +57,5 @@ public class CompensationsCreateControllerMvcTest {
                    jsonPath("$.id").value(compensationId)
            );
         }
-    }
-
-    private String toJSON(Object object) throws JsonProcessingException {
-        ObjectMapper objectMapper = new ObjectMapper();
-        return objectMapper.writeValueAsString(object);
     }
 }

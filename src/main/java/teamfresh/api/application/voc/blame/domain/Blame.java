@@ -22,23 +22,35 @@ public class Blame {
     @Enumerated(EnumType.STRING)
     private BlameTarget target;
 
+    /** 귀책 당사 회사 id */
+    private Long company_id;
+
     /** 귀책 사유 */
     @Column(length = 500)
     private String cause;
 
     protected Blame() {}
 
-    private Blame(final Long id, final BlameTarget target, final String cause) {
+    public Blame(final Long id, final BlameTarget target, final Long company_id, final String cause) {
         this.id = id;
         this.target = target;
+        this.company_id = company_id;
         this.cause = cause;
     }
 
     public static Blame of(Long id, BlameTarget target, String cause) {
-        return new Blame(id, target, cause);
+        return new Blame(id, target, null, cause);
     }
 
     public static Blame of(BlameTarget target, String cause) {
-        return new Blame(null, target, cause);
+        return new Blame(null, target, null, cause);
+    }
+
+    public static Blame of(BlameTarget target, Long company_id, String cause) {
+        return new Blame(null, target, company_id, cause);
+    }
+
+    public static Blame of(Long id, BlameTarget target, Long company_id, String cause) {
+        return new Blame(id, target, company_id, cause);
     }
 }

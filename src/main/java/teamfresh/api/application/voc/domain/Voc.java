@@ -65,6 +65,10 @@ public class Voc {
         return new Voc(id, content, blame, null, customerManagerId, createdBy);
     }
 
+    public static Voc of(Long id, String content, Blame blame, Compensation compensation, Long customerManagerId, Long createdBy) {
+        return new Voc(id, content, blame, compensation, customerManagerId, createdBy);
+    }
+
     /**
      * 해당 VOC 건에 대한 배상을 접수합니다.
      */

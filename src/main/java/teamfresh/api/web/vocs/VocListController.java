@@ -54,8 +54,10 @@ public class VocListController {
                 this.id = voc.getId();
                 this.content = voc.getContent();
                 this.blame = new BlameDto(voc.getBlame());
-                this.compensation = new CompensationDto(voc.getCompensation());
-                this.penalty = new PenaltyDto(voc.getCompensation().getPenalty());
+                this.compensation = voc.getCompensation() == null ?
+                        null : new CompensationDto(voc.getCompensation());
+                this.penalty = voc.getCompensation() == null ?
+                        null : new PenaltyDto(voc.getCompensation().getPenalty());
             }
 
             @Getter

@@ -62,12 +62,14 @@ public class VocListController {
             public static class BlameDto {
                 private Long id;
                 private BlameTarget target;
+                private Long targetCompanyId;
                 private String cause;
 
                 public BlameDto(Blame blame) {
                     if (blame != null) {
                         this.id = blame.getId();
                         this.target = blame.getTarget();
+                        this.targetCompanyId = blame.getCompany_id();
                         this.cause = blame.getCause();
                     }
                 }

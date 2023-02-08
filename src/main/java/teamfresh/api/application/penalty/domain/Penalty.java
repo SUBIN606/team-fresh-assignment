@@ -10,6 +10,8 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import lombok.Getter;
 import teamfresh.api.application.compensation.domain.Compensation;
+import teamfresh.api.application.penalty.objection.domain.Objection;
+
 
 /** 페널티 엔티티 */
 @Getter
@@ -37,6 +39,9 @@ public class Penalty {
     /** 페널티 인정 여부 */
     @Column(columnDefinition = "tinyint")
     private Boolean confirmed;
+
+    @OneToOne(mappedBy = "penalty", fetch = FetchType.LAZY)
+    private Objection objection;
 
     protected Penalty() {
     }
@@ -69,5 +74,10 @@ public class Penalty {
     /** 페널티를 확인하면 read 상태를 true로 변경합니다. */
     public void read() {
         this.read = Boolean.TRUE;
+    }
+
+    /** 페널티에 대한 이의제기 */
+    public void object(Objection objection) {
+        this.objection = objection;
     }
 }

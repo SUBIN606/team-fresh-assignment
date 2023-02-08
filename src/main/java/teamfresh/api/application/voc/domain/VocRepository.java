@@ -12,8 +12,9 @@ public interface VocRepository extends CrudRepository<Voc, Long> {
     @Query(
             "select v from Voc v " +
                     "join fetch v.blame " +
-                    "join fetch v.compensation " +
-                    "join fetch v.compensation.penalty"
+                    "left join fetch v.compensation " +
+                    "left join fetch v.compensation.penalty " +
+                    "left join fetch v.compensation.penalty.objection"
     )
     List<Voc> findAllWithFetch();
 }

@@ -93,12 +93,14 @@ public class VocListController {
                 private Long id;
                 private Boolean read;
                 private Boolean confirmed;
+                private Boolean objected;
 
                 public PenaltyDto(Penalty penalty) {
                     if (penalty != null) {
                         this.id = penalty.getId();
                         this.read = penalty.getRead();
                         this.confirmed = penalty.getConfirmed();
+                        this.objected = penalty.getObjection() != null;
                     }
                 }
             }

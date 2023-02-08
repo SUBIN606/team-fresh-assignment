@@ -37,6 +37,7 @@ class VocCreatorTest {
         Long createdBy = 1L;
         String content = "배송 물건 파손";
         BlameTarget target = BlameTarget.CARRIER;
+        Long targetCompanyId = 12L;
         String cause = "배송 중 박스가 박스 훼손으로 인한 물건 파손";
         Long customerManagerId = 9L;
 
@@ -46,12 +47,12 @@ class VocCreatorTest {
         @DisplayName("VOC를 생성 후 반환한다")
         @Test
         void it_create_voc() {
-            given(blameCreator.create(target, cause)).willReturn(blame);
+            given(blameCreator.create(target, targetCompanyId, cause)).willReturn(blame);
             given(vocRepository.save(any())).willReturn(voc);
 
             Voc savedVoc = vocCreator.create(
                     new VocCreator.Command(
-                            content, target, cause, customerManagerId, createdBy
+                            content, target, targetCompanyId, cause, customerManagerId, createdBy
                     )
             );
 

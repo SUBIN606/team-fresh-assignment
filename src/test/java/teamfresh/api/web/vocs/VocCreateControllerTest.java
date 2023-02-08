@@ -32,6 +32,7 @@ class VocCreateControllerTest {
         Long vocId = 8L;
         String content = "voc content";
         BlameTarget target = BlameTarget.CARRIER;
+        Long targetCompanyId = 12L;
         String cause = "blame cause";
         Long customerManagerId = 33L;
         Long createdBy = 1L;
@@ -49,8 +50,14 @@ class VocCreateControllerTest {
             @Test
             void it_return_voc_id() {
                 //given
-                VocCreateController.Request request = new VocCreateController.Request(
-                        content, target, cause, customerManagerId, createdBy
+                VocCreateController.Request request
+                        = new VocCreateController.Request(
+                        content,
+                        target,
+                        targetCompanyId,
+                        cause,
+                        customerManagerId,
+                        createdBy
                 );
 
                 //when

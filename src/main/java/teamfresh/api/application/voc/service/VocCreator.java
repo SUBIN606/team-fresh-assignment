@@ -29,7 +29,11 @@ public class VocCreator {
         return repository.save(
                 Voc.of(
                         command.content,
-                        blameCreator.create(command.target, command.cause),
+                        blameCreator.create(
+                                command.target,
+                                command.targetCompanyId,
+                                command.cause
+                        ),
                         command.customerManagerId,
                         command.createdBy
                 )
@@ -44,6 +48,7 @@ public class VocCreator {
     public static class Command {
         private String content;
         private BlameTarget target;
+        private Long targetCompanyId;
         private String cause;
         private Long customerManagerId;
         private Long createdBy;

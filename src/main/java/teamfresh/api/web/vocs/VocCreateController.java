@@ -33,6 +33,7 @@ public class VocCreateController {
         VocCreator.Command command = new VocCreator.Command(
                 request.getContent(),
                 request.getTarget(),
+                request.getTargetCompanyId(),
                 request.getCause(),
                 request.getCustomerManagerId(),
                 request.getCreatedBy()
@@ -46,6 +47,7 @@ public class VocCreateController {
     public static class Request {
         private String content;
         private BlameTarget target;
+        private Long targetCompanyId;
         private String cause;
         private Long customerManagerId;
         private Long createdBy;

@@ -37,7 +37,7 @@ class VocListReaderTest {
         @BeforeEach
         void setUp() {
             given(repository.findAllWithFetch())
-                    .willReturn(createVodList());
+                    .willReturn(createVocList());
         }
 
         @DisplayName("모든 VOC 목록을 조회 후 반환한다")
@@ -50,7 +50,7 @@ class VocListReaderTest {
         }
     }
 
-    private List<Voc> createVodList() {
+    private List<Voc> createVocList() {
         return List.of(
                 Voc.of(
                         1L,

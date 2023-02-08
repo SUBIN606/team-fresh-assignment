@@ -35,7 +35,7 @@ class VocListControllerTest {
         @BeforeEach
         void setUp() {
             given(vocListReader.read())
-                    .willReturn(createVodList());
+                    .willReturn(createVocList());
         }
 
         @DisplayName("VOC 목록읇 반환한다")
@@ -49,7 +49,7 @@ class VocListControllerTest {
         }
     }
 
-    private List<Voc> createVodList() {
+    private List<Voc> createVocList() {
         return List.of(
                 Voc.of(
                         1L,

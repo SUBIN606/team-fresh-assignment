@@ -38,7 +38,7 @@ public class VocListControllerMvcTest {
         @BeforeEach
         void setUp() {
             given(vocListReader.read())
-                    .willReturn(createVodList());
+                    .willReturn(createVocList());
         }
 
         @DisplayName("200 Ok 상태코드와 함게 VOD 목록을 반환한다")
@@ -56,7 +56,7 @@ public class VocListControllerMvcTest {
         }
     }
 
-    private List<Voc> createVodList() {
+    private List<Voc> createVocList() {
         return List.of(
                 Voc.of(
                         1L,

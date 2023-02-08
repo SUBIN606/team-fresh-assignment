@@ -53,4 +53,9 @@ public class Penalty {
     public static Penalty of(Compensation compensation, Long owner) {
         return new Penalty(null, compensation, owner, false, false);
     }
+
+    /** 페널티를 확인하면 read 상태를 true로 변경합니다. */
+    public void read() {
+        this.read = Boolean.TRUE;
+    }
 }

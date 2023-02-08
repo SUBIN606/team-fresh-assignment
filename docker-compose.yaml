@@ -1,0 +1,11 @@
+version: "3.8"
+services:
+  api:
+    container_name: "team-fresh-voc-api"
+    image: gradle:7.6-jdk17
+    ports:
+      - "8080:8080"
+    working_dir: /team-fresh-assignment
+    volumes:
+      - .:/team-fresh-assignment
+    entrypoint: ./gradlew bootRun --args='--url="jdbc:mariadb://host.docker.internal:3306/team_fresh"'

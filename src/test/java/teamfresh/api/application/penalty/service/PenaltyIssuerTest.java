@@ -38,7 +38,7 @@ class PenaltyIssuerTest {
         Long compensationId = 1L;
         Compensation compensation = Compensation.of(compensationId, 32000);
         Long owner = 17L;
-
+        String content = "페널티 내용";
 
         @DisplayName("배상정보 id와 페널티 대상 id가 주어지면")
         @Nested
@@ -49,13 +49,13 @@ class PenaltyIssuerTest {
                 given(compensationReader.read(compensationId))
                         .willReturn(compensation);
                 given(repository.save(any()))
-                        .willReturn(Penalty.of(1L, compensation, owner));
+                        .willReturn(Penalty.of(1L, compensation, owner, content));
             }
 
             @DisplayName("페널티를 생성 후 반환한다")
             @Test
             void it_returns_penalty() {
-                Penalty penalty = penaltyIssuer.issue(compensationId, owner);
+                Penalty penalty = penaltyIssuer.issue(compensationId, owner, content);
 
                 assertThat(penalty).isNotNull();
                 assertThat(penalty.getCompensation().getId()).isEqualTo(compensationId);
@@ -76,7 +76,7 @@ class PenaltyIssuerTest {
             @Test
             void it_throws_compensation_not_found_exception() {
                 assertThrows(CompensationNotFoundException.class,
-                        () -> penaltyIssuer.issue(compensationId, owner));
+                        () -> penaltyIssuer.issue(compensationId, owner, content));
             }
         }
     }

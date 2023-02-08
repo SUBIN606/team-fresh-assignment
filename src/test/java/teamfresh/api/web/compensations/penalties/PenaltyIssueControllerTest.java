@@ -33,21 +33,29 @@ class PenaltyIssueControllerTest {
         Long compensationId = 4L;
         Long ownerId = 11L;
         Long penaltyId = 8L;
+        String content = "페널티 내용";
 
         @DisplayName("배상정보 id와 페널티 대상 id가 주어지면")
         @Nested
         class Context_with_compensation_id_and_owner_id {
             @BeforeEach
             void setUp() {
-                given(penaltyIssuer.issue(compensationId, ownerId))
-                        .willReturn(Penalty.of(penaltyId, Compensation.of(compensationId, 100000), ownerId));
+                given(penaltyIssuer.issue(compensationId, ownerId, content))
+                        .willReturn(
+                                Penalty.of(
+                                        penaltyId,
+                                        Compensation.of(compensationId, 100000),
+                                        ownerId,
+                                        content
+                                )
+                        );
             }
 
             @DisplayName("발급된 페널티 id를 반환한다")
             @Test
             void it_returns_issued_penalty_id() {
                 PenaltyIssueController.Request request
-                    = new PenaltyIssueController.Request(ownerId);
+                    = new PenaltyIssueController.Request(ownerId, content);
 
                 PenaltyIssueController.Response response
                         = penaltyIssueController.handleIssuePenalty(
@@ -63,7 +71,7 @@ class PenaltyIssueControllerTest {
         class Context_with_not_exist_compensation_id {
             @BeforeEach
             void setUp() {
-                given(penaltyIssuer.issue(compensationId, ownerId))
+                given(penaltyIssuer.issue(compensationId, ownerId, content))
                         .willThrow(new CompensationNotFoundException(compensationId));
             }
 
@@ -71,7 +79,7 @@ class PenaltyIssueControllerTest {
             @Test
             void it_throws_compensation_not_found_exception() {
                 PenaltyIssueController.Request request
-                        = new PenaltyIssueController.Request(ownerId);
+                        = new PenaltyIssueController.Request(ownerId, content);
 
                 assertThrows(CompensationNotFoundException.class,
                         () -> penaltyIssueController.handleIssuePenalty(

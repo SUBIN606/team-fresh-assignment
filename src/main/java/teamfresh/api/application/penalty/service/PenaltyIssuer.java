@@ -21,13 +21,14 @@ public class PenaltyIssuer {
      *
      * @param compensationId 배상 정보 id
      * @param owner 페널티 대상
+     * @param content 페널티 내용
      * @return 등록된 페널티 정보
      */
     @Transactional
-    public Penalty issue(Long compensationId, Long owner) {
+    public Penalty issue(Long compensationId, Long owner, String content) {
         Compensation compensation = compensationReader.read(compensationId);
         return repository.save(
-                Penalty.of(compensation, owner)
+                Penalty.of(compensation, owner, content)
         );
     }
 }

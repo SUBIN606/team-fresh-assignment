@@ -20,12 +20,14 @@ public class BlameCreator {
      * 주어진 귀책 정보를 이용해 Blame 엔티티를 생성 및 저장 후 반환합니다.
      *
      * @param target 귀책 대상
+     * @param companyId 귀책 당사 회사 id
      * @param cause 귀책 사유
      * @return 생성된 귀책 정보
      */
     @Transactional
     public Blame create(BlameTarget target,
-                       String cause) {
-        return repository.save(Blame.of(target, cause));
+                        Long companyId,
+                        String cause) {
+        return repository.save(Blame.of(target,companyId, cause));
     }
 }

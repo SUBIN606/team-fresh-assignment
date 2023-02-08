@@ -36,6 +36,7 @@ public class VocCreateControllerMvcTest {
         Long vocId = 8L;
         String content = "voc content";
         BlameTarget target = BlameTarget.CARRIER;
+        Long targetCompanyId = 12L;
         String cause = "blame cause";
         Long customerManagerId = 33L;
         Long createdBy = 1L;
@@ -50,7 +51,7 @@ public class VocCreateControllerMvcTest {
         @Test
         void it_response_voc_id_with_201_status() throws Exception {
             VocCreateController.Request request = new VocCreateController.Request(
-                    content, target, cause, customerManagerId, createdBy
+                    content, target, targetCompanyId, cause, customerManagerId, createdBy
             );
 
             mvc.perform(

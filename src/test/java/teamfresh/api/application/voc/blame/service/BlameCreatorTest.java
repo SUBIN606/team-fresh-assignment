@@ -32,6 +32,7 @@ class BlameCreatorTest {
         @Nested
         class Context_with_blame_data {
             BlameTarget target = BlameTarget.CARRIER;
+            Long targetCompanyId = 12L;
             String cause = "배송 중 박스가 박스 훼손으로 인한 물건 파손";
             Blame blame = Blame.of(1L, target, cause);
 
@@ -40,7 +41,7 @@ class BlameCreatorTest {
             void it_create_and_return_blame() {
                 given(repository.save(any())).willReturn(blame);
 
-                Blame savedBlame = blameCreator.create(target, cause);
+                Blame savedBlame = blameCreator.create(target, targetCompanyId, cause);
 
                 assertThat(savedBlame.getId()).isNotNull();
                 assertThat(savedBlame.getTarget()).isEqualTo(target);

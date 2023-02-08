@@ -27,6 +27,9 @@ public class Penalty {
     /** 페널티 소유자 */
     private Long owner;
 
+    /** 페널티 내용 */
+    private String content;
+
     /** 페널티 확인 여부 */
     @Column(name = "is_read", columnDefinition = "tinyint")
     private Boolean read;
@@ -38,20 +41,29 @@ public class Penalty {
     protected Penalty() {
     }
 
-    private Penalty(final Long id, final Compensation compensation, final Long owner, final Boolean read, final Boolean confirmed) {
+    private Penalty(final Long id, final Compensation compensation, final Long owner, final String content, final Boolean read, final Boolean confirmed) {
         this.id = id;
         this.compensation = compensation;
         this.owner = owner;
+        this.content = content;
         this.read = read;
         this.confirmed = confirmed;
     }
 
-    public static Penalty of(Long id, Compensation compensation, Long owner) {
-        return new Penalty(id, compensation, owner, false, false);
+    public static Penalty of(Compensation compensation, Long owner) {
+        return new Penalty(null, compensation, owner, null, false, false);
     }
 
-    public static Penalty of(Compensation compensation, Long owner) {
-        return new Penalty(null, compensation, owner, false, false);
+    public static Penalty of(Compensation compensation, Long owner, String content) {
+        return new Penalty(null, compensation, owner, content, false, false);
+    }
+
+    public static Penalty of(Long id, Compensation compensation, Long owner) {
+        return new Penalty(id, compensation, owner, null, false, false);
+    }
+
+    public static Penalty of(Long id, Compensation compensation, Long owner, String content) {
+        return new Penalty(id, compensation, owner, content, false, false);
     }
 
     /** 페널티를 확인하면 read 상태를 true로 변경합니다. */

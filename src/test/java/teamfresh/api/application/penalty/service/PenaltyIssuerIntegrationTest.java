@@ -45,6 +45,7 @@ public class PenaltyIssuerIntegrationTest {
 
         Long compensationId;
         Long owner = 8L;
+        String content = "페널티 내용";
 
         @BeforeEach
         void setUp() {
@@ -56,7 +57,7 @@ public class PenaltyIssuerIntegrationTest {
         @DisplayName("페널티 정보가 배상정보 id와 함께 저장된다")
         @Test
         void it_will_save_penalty() {
-            Penalty penalty = penaltyIssuer.issue(compensationId, owner);
+            Penalty penalty = penaltyIssuer.issue(compensationId, owner, content);
 
             assertThat(penalty).isNotNull();
             assertThat(penalty.getCompensation().getId()).isEqualTo(compensationId);
@@ -81,7 +82,7 @@ public class PenaltyIssuerIntegrationTest {
             @Test
             void it_throws_compensation_not_found_exception() {
                 assertThrows(CompensationNotFoundException.class,
-                        () -> penaltyIssuer.issue(compensationId, owner));
+                        () -> penaltyIssuer.issue(compensationId, owner, content));
             }
         }
     }

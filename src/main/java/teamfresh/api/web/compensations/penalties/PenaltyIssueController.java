@@ -34,7 +34,11 @@ public class PenaltyIssueController {
             @RequestBody Request request
     ) {
         return new Response(
-                penaltyIssuer.issue(compensationId, request.getOwner()).getId()
+                penaltyIssuer.issue(
+                        compensationId,
+                        request.getOwner(),
+                        request.getContent()
+                ).getId()
         );
     }
 
@@ -44,6 +48,7 @@ public class PenaltyIssueController {
     @NoArgsConstructor
     public static class Request {
         private Long owner;
+        private String content;
     }
 
     /** 페널티 발급 응답 객체 */

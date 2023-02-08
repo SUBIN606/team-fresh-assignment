@@ -8,8 +8,8 @@ import java.util.List;
 public interface CompensationRepository extends CrudRepository<Compensation, Long> {
 
     @Query(
-            "select c from Compensation c" +
-                    "join c.compensation"
+            "select c from Compensation c " +
+                    "join fetch c.penalty"
     )
     List<Compensation> findAllWithFetch();
 }

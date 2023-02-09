@@ -34,7 +34,13 @@ docker-compose down
 chmod +x gradlew
 ```
 
+> 서버는 8080포트를 사용합니다.
+
 ## 테이블 스키마
 ![image](ERD.png)
 
 ## 클래스 다이어그램
+![image](class-diagram-1.png)
+![image](class-diagram-2.png)
+![image](class-diagram-3.png)
+![image](class-diagram-4.png)

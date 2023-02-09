@@ -10,13 +10,13 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import teamfresh.api.application.compensation.domain.Compensation;
+import teamfresh.api.application.compensation.exception.CompensationNotFoundException;
 import teamfresh.api.application.penalty.domain.Penalty;
 import teamfresh.api.application.penalty.service.PenaltyIssuer;
 
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static teamfresh.api.web.MvcTestHelpers.toJSON;
 
 @WebMvcTest(PenaltyIssueController.class)
@@ -36,6 +36,8 @@ public class PenaltyIssueControllerMvcTest {
         Long ownerId = 11L;
         Long penaltyId = 8L;
         String content = "페널티 내용";
+        PenaltyIssueController.Request request
+                = new PenaltyIssueController.Request(ownerId, content);
 
         @DisplayName("배상정보 id와 페널티 대상 id가 주어지면")
         @Nested
@@ -49,9 +51,6 @@ public class PenaltyIssueControllerMvcTest {
             @DisplayName("201 Created 상태코드와 함께 발급된 페널티 id를 응답한다")
             @Test
             void it_returns_issued_penalty_id() throws Exception {
-                PenaltyIssueController.Request request
-                        = new PenaltyIssueController.Request(ownerId, content);
-
                 mvc.perform(
                         post(String.format("/compensations/%s/penalties", compensationId))
                                 .contentType(MediaType.APPLICATION_JSON)
@@ -60,6 +59,30 @@ public class PenaltyIssueControllerMvcTest {
                         status().isCreated(),
                         jsonPath("$.id").isNumber(),
                         jsonPath("$.id").value(penaltyId)
+                );
+            }
+        }
+
+        @DisplayName("찾을 수 없는 배상정보 id가 주어지면")
+        @Nested
+        class Context_with_not_exist_compensation_id {
+            @BeforeEach
+            void setUp() {
+                given(penaltyIssuer.issue(compensationId, ownerId, content))
+                        .willThrow(new CompensationNotFoundException(compensationId));
+            }
+
+            @DisplayName("404 Not Found를 응답한다")
+            @Test
+            void it_response_404() throws Exception {
+                mvc.perform(
+                        post(String.format("/compensations/%s/penalties", compensationId))
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(toJSON(request))
+                ).andExpectAll(
+                        status().isNotFound(),
+                        jsonPath("$.message")
+                                .value(String.format("%s에 해당하는 배상 정보를 찾을 수 없습니다.", compensationId))
                 );
             }
         }

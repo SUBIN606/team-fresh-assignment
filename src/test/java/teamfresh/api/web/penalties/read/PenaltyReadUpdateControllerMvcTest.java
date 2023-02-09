@@ -11,11 +11,9 @@ import org.springframework.test.web.servlet.MockMvc;
 import teamfresh.api.application.penalty.exception.PenaltyNotFoundException;
 import teamfresh.api.application.penalty.service.PenaltyReadUpdater;
 
-import static org.mockito.ArgumentMatchers.contains;
 import static org.mockito.Mockito.doThrow;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(PenaltyReadUpdateController.class)
 public class PenaltyReadUpdateControllerMvcTest {
@@ -58,9 +56,8 @@ public class PenaltyReadUpdateControllerMvcTest {
                         patch(String.format("/penalties/%s/read", id))
                 ).andExpectAll(
                         status().isNotFound(),
-                        content().string(
-                                String.format("%s에 해당하는 페널티 정보를 찾을 수 없습니다.", id)
-                        )
+                        jsonPath("$.message")
+                                .value(String.format("%s에 해당하는 페널티 정보를 찾을 수 없습니다.", id))
                 );
             }
         }

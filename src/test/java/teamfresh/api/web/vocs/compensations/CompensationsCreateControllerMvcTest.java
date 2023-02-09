@@ -11,7 +11,6 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import teamfresh.api.application.compensation.domain.Compensation;
 import teamfresh.api.application.compensation.exception.CompensationAlreadyExistException;
-import teamfresh.api.application.compensation.exception.CompensationNotFoundException;
 import teamfresh.api.application.compensation.service.CompensationCreator;
 import teamfresh.api.application.voc.exception.VocNotFoundException;
 
@@ -82,9 +81,8 @@ public class CompensationsCreateControllerMvcTest {
                                 .content(toJSON(request))
                 ).andExpectAll(
                         status().isNotFound(),
-                        content().string(
-                                String.format("%s에 해당하는 Voc를 찾을 수 없습니다.", vocId)
-                        )
+                        jsonPath("$.message")
+                                .value(String.format("%s에 해당하는 Voc를 찾을 수 없습니다.", vocId))
                 );
             }
         }
@@ -107,9 +105,7 @@ public class CompensationsCreateControllerMvcTest {
                                 .content(toJSON(request))
                 ).andExpectAll(
                         status().isBadRequest(),
-                        content().string(
-                                "이미 존재하는 배상정보가 있습니다."
-                        )
+                        jsonPath("$.message").value("이미 존재하는 배상정보가 있습니다.")
                 );
             }
         }

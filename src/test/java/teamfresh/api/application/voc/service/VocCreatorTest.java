@@ -8,7 +8,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import teamfresh.api.application.voc.blame.domain.Blame;
-import teamfresh.api.application.voc.blame.service.BlameCreator;
 import teamfresh.api.application.voc.blame.domain.BlameTarget;
 import teamfresh.api.application.voc.domain.Voc;
 import teamfresh.api.application.voc.domain.VocRepository;
@@ -23,9 +22,6 @@ class VocCreatorTest {
 
     @InjectMocks
     private VocCreator vocCreator;
-
-    @Mock
-    private BlameCreator blameCreator;
 
     @Mock
     private VocRepository vocRepository;
@@ -47,7 +43,6 @@ class VocCreatorTest {
         @DisplayName("VOC를 생성 후 반환한다")
         @Test
         void it_create_voc() {
-            given(blameCreator.create(target, targetCompanyId, cause)).willReturn(blame);
             given(vocRepository.save(any())).willReturn(voc);
 
             Voc savedVoc = vocCreator.create(

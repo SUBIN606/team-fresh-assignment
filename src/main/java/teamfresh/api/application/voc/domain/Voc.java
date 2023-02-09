@@ -1,5 +1,6 @@
 package teamfresh.api.application.voc.domain;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -25,7 +26,7 @@ public class Voc {
     @Column(length = 500)
     private String content;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "blame_id")
     private Blame blame;
 
@@ -49,16 +50,20 @@ public class Voc {
         this.createdBy = createdBy;
     }
 
-    public static Voc of(Long id, String content, Long createdBy) {
-        return new Voc(id, content, null, null, null, createdBy);
-    }
-
     public static Voc of(String content, Long createdBy) {
         return new Voc(null, content, null, null, null, createdBy);
     }
 
+    public static Voc of(String content, Long customerManagerId, Long createdBy) {
+        return new Voc(null, content, null, null, customerManagerId, createdBy);
+    }
+
     public static Voc of(String content, Blame blame, Long customerManagerId, Long createdBy) {
         return new Voc(null, content, blame, null, customerManagerId, createdBy);
+    }
+
+    public static Voc of(Long id, String content, Long createdBy) {
+        return new Voc(id, content, null, null, null, createdBy);
     }
 
     public static Voc of(Long id, String content, Blame blame, Long customerManagerId, Long createdBy) {
@@ -67,6 +72,13 @@ public class Voc {
 
     public static Voc of(Long id, String content, Blame blame, Compensation compensation, Long customerManagerId, Long createdBy) {
         return new Voc(id, content, blame, compensation, customerManagerId, createdBy);
+    }
+
+    /** 해당 VOC 건과 관련된 배귀책을 설정합니다. */
+    public void setBlame(Blame blame) {
+        if (blame != null) {
+            this.blame = blame;
+        }
     }
 
     /**

@@ -5,7 +5,7 @@ import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import teamfresh.api.application.voc.blame.service.BlameCreator;
+import teamfresh.api.application.voc.blame.domain.Blame;
 import teamfresh.api.application.voc.blame.domain.BlameTarget;
 import teamfresh.api.application.voc.domain.Voc;
 import teamfresh.api.application.voc.domain.VocRepository;
@@ -15,7 +15,6 @@ import teamfresh.api.application.voc.domain.VocRepository;
 @Service
 public class VocCreator {
 
-    private final BlameCreator blameCreator;
     private final VocRepository repository;
 
     /**
@@ -26,18 +25,21 @@ public class VocCreator {
      */
     @Transactional
     public Voc create(Command command) {
-        return repository.save(
-                Voc.of(
-                        command.content,
-                        blameCreator.create(
-                                command.target,
-                                command.targetCompanyId,
-                                command.cause
-                        ),
-                        command.customerManagerId,
-                        command.createdBy
+        Voc voc = Voc.of(
+                command.content,
+                command.customerManagerId,
+                command.createdBy
+        );
+
+        voc.setBlame(
+                Blame.of(
+                        command.target,
+                        command.targetCompanyId,
+                        command.cause
                 )
         );
+
+        return repository.save(voc);
     }
 
     /**

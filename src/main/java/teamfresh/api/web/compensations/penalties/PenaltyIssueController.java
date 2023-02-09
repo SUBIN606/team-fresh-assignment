@@ -1,7 +1,8 @@
 package teamfresh.api.web.compensations.penalties;
 
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -50,10 +51,11 @@ public class PenaltyIssueController {
     @AllArgsConstructor
     @NoArgsConstructor
     public static class Request {
-        @Min(1)
+        @Positive
         private Long owner;
 
-        @NotEmpty(message = "페널티 내용을 입력하세요.")
+        @NotBlank(message = "페널티 내용을 입력하세요.")
+        @Size(max = 500)
         private String content;
     }
 

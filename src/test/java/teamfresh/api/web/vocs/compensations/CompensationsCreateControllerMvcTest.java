@@ -4,6 +4,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -106,6 +108,30 @@ public class CompensationsCreateControllerMvcTest {
                 ).andExpectAll(
                         status().isBadRequest(),
                         jsonPath("$.message").value("이미 존재하는 배상정보가 있습니다.")
+                );
+            }
+        }
+
+        @DisplayName("0 혹은 0보다 작은 배상 금액이 주어지면")
+        @Nested
+        class Context_with_negative_amount{
+            @DisplayName("400 Bad Request를 응답한다")
+            @ParameterizedTest
+            @ValueSource(ints = {0, -1})
+            void it_response_400(int amount) throws Exception {
+                CompensationsCreateController.Request invalidRequest
+                        = new CompensationsCreateController.Request(amount);
+
+                mvc.perform(
+                        post(String.format("/vocs/%s/compensations", vocId))
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(toJSON(invalidRequest))
+                ).andExpectAll(
+                        status().isBadRequest(),
+                        jsonPath("$.errors[0].field").value("amount"),
+                        jsonPath("$.errors[0].message").value(
+                                "배상 금액은 0보다 큰 숫자를 입력해야 합니다."
+                        )
                 );
             }
         }

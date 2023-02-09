@@ -30,6 +30,7 @@ public class Penalty {
     private Long owner;
 
     /** 페널티 내용 */
+    @Column(length = 500)
     private String content;
 
     /** 페널티 확인 여부 */

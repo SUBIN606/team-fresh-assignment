@@ -4,6 +4,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -13,6 +16,9 @@ import teamfresh.api.application.compensation.domain.Compensation;
 import teamfresh.api.application.compensation.exception.CompensationNotFoundException;
 import teamfresh.api.application.penalty.domain.Penalty;
 import teamfresh.api.application.penalty.service.PenaltyIssuer;
+
+import java.util.List;
+import java.util.stream.Stream;
 
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -83,6 +89,33 @@ public class PenaltyIssueControllerMvcTest {
                         status().isNotFound(),
                         jsonPath("$.message")
                                 .value(String.format("%s에 해당하는 배상 정보를 찾을 수 없습니다.", compensationId))
+                );
+            }
+        }
+
+        @DisplayName("유효하지 않은 페널티 발급 요청 객체가 주어지면")
+        @Nested
+        class Context_with_invalid_data{
+            @DisplayName("400 Bad Request를 응답한다")
+            @ParameterizedTest
+            @MethodSource("createInvalidRequestDatas")
+            void is_response_400(PenaltyIssueController.Request invalidRequest) throws Exception {
+                mvc.perform(
+                        post(String.format("/compensations/%s/penalties", compensationId))
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(toJSON(invalidRequest))
+                ).andExpectAll(
+                        status().isBadRequest(),
+                        jsonPath("$.errors").isNotEmpty()
+                );
+            }
+
+            private static Stream<Arguments> createInvalidRequestDatas() {
+                return Stream.of(
+                        Arguments.of(new PenaltyIssueController.Request(0L, "content")),
+                        Arguments.of(new PenaltyIssueController.Request(1L, "")),
+                        Arguments.of(new PenaltyIssueController.Request(1L, " ")),
+                        Arguments.of( new PenaltyIssueController.Request(1L, "a".repeat(501)))
                 );
             }
         }

@@ -1,6 +1,6 @@
 package teamfresh.api.web.vocs.compensations;
 
-import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -46,7 +46,7 @@ public class CompensationsCreateController {
     @AllArgsConstructor
     @NoArgsConstructor
     public static class Request {
-        @Min(0)
+        @Positive(message = "배상 금액은 0보다 큰 숫자를 입력해야 합니다.")
         private int amount;
     }
 

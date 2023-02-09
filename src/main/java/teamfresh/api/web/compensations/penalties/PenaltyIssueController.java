@@ -1,10 +1,13 @@
 package teamfresh.api.web.compensations.penalties;
 
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -31,7 +34,7 @@ public class PenaltyIssueController {
     @PostMapping
     public Response handleIssuePenalty(
             @PathVariable Long compensationId,
-            @RequestBody Request request
+            @Validated @RequestBody Request request
     ) {
         return new Response(
                 penaltyIssuer.issue(
@@ -47,7 +50,10 @@ public class PenaltyIssueController {
     @AllArgsConstructor
     @NoArgsConstructor
     public static class Request {
+        @Min(1)
         private Long owner;
+
+        @NotEmpty(message = "페널티 내용을 입력하세요.")
         private String content;
     }
 

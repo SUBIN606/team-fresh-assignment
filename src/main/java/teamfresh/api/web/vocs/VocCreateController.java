@@ -1,9 +1,13 @@
 package teamfresh.api.web.vocs;
 
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,7 +33,7 @@ public class VocCreateController {
      */
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
-    public Response handleVocCreate(@RequestBody Request request) {
+    public Response handleVocCreate(@Validated @RequestBody Request request) {
         VocCreator.Command command = new VocCreator.Command(
                 request.getContent(),
                 request.getTarget(),
@@ -45,11 +49,23 @@ public class VocCreateController {
     @Getter
     @AllArgsConstructor
     public static class Request {
+        @NotEmpty(message = "VOC 내용을 입력하세요.")
+        @Size(max = 500)
         private String content;
+
         private BlameTarget target;
+
+        @Min(1)
         private Long targetCompanyId;
+
+        @NotEmpty(message = "귀책 사유를 입력하세요.")
+        @Size(max = 500)
         private String cause;
+
+        @Min(1)
         private Long customerManagerId;
+
+        @Min(1)
         private Long createdBy;
     }
 

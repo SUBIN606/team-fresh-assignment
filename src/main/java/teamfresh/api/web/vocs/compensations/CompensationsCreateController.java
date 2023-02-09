@@ -1,10 +1,12 @@
 package teamfresh.api.web.vocs.compensations;
 
+import jakarta.validation.constraints.Min;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -32,7 +34,7 @@ public class CompensationsCreateController {
     @PostMapping
     public Response handleCompensationCreate(
             @PathVariable Long vocId,
-            @RequestBody Request request
+            @Validated @RequestBody Request request
     ) {
         return new Response(
                 compensationCreator.create(vocId, request.getAmount()).getId()
@@ -44,6 +46,7 @@ public class CompensationsCreateController {
     @AllArgsConstructor
     @NoArgsConstructor
     public static class Request {
+        @Min(0)
         private int amount;
     }
 

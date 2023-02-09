@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import teamfresh.api.application.compensation.domain.Compensation;
 import teamfresh.api.application.compensation.domain.CompensationRepository;
+import teamfresh.api.application.compensation.exception.CompensationAlreadyExistException;
 import teamfresh.api.application.voc.domain.Voc;
 import teamfresh.api.application.voc.service.VocReader;
 
@@ -26,6 +27,9 @@ public class CompensationCreator {
     @Transactional
     public Compensation create(Long vocId, int amount) {
         Voc voc = vocReader.read(vocId);
+        if (voc.getCompensation() != null) {
+            throw new CompensationAlreadyExistException();
+        }
 
         Compensation compensation = repository.save(
                 Compensation.of(amount)

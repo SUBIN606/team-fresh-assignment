@@ -9,7 +9,7 @@ public interface CompensationRepository extends CrudRepository<Compensation, Lon
 
     @Query(
             "select c from Compensation c " +
-                    "join fetch c.penalty"
+                    "join fetch c.voc"
     )
     List<Compensation> findAllWithFetch();
 }

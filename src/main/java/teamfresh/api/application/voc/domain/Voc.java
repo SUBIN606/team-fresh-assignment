@@ -74,7 +74,7 @@ public class Voc {
         return new Voc(id, content, blame, compensation, customerManagerId, createdBy);
     }
 
-    /** 해당 VOC 건과 관련된 배귀책을 설정합니다. */
+    /** 해당 VOC 건과 관련된 귀책을 설정합니다. */
     public void setBlame(Blame blame) {
         if (blame != null) {
             this.blame = blame;

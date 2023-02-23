@@ -33,6 +33,7 @@ public class Compensation {
     private Compensation(final Long id, final int amount, final Voc voc, final Penalty penalty) {
         this.id = id;
         this.amount = amount;
+        this.voc = voc;
         this.penalty = penalty;
     }
 
